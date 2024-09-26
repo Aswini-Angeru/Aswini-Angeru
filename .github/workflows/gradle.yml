@@ -23,9 +23,9 @@ jobs:
         with:
           java-version: '11'
       # - name: Grant execute permission for gradlew
-      #   run: chmod +x ./gradlew
+          run: chmod +x ./gradlew
       - name: build with Gradle
-        run: gradle build --warning-mode all 
+        run: ./gradlew build --warning-mode all 
 
       - name: run tests
-        run: gradle test
+        run: ./gradlew test
