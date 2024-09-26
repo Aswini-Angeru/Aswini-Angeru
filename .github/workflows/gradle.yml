@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: '11'
       - name: build Gradle
-        run: gradle build
+        run: ./gradlew build --warning-mode all 
 
       - name: run tests
         run: gradle test
