@@ -1,0 +1,27 @@
+name: Update Gradle Dependencies
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Run the shell script to list libraries from JFrog
+        run: |
+          chmod +x list_libraries.sh
+          # ./list_libraries.sh
+
+      - name: Setup JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+
+      - name: Build with Gradle
+        run: ./gradlew build
