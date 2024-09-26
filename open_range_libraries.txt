@@ -1,1 +1,1 @@
-org.gradle:gradle-core:2.2'
+org.gradle:gradle-core:2.14.1'
