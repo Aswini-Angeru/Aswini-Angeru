@@ -15,11 +15,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+ 
     - name: Grant execute permission for test.sh
-        run: |
+      run: |
         chmod +x test.sh
         ./test.sh
-
+ 
     # - name: Set up Git
     #   run: |
     #     git config --global user.name 'github-actions[bot]'
@@ -43,6 +44,7 @@ jobs:
     #     git add config/app.properties
     #     git commit -m "Update config values"
     #     git push origin release
+ 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
  
