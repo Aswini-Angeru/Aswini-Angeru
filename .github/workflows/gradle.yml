@@ -3,7 +3,7 @@ name: Update Gradle Dependencies
 on:
   push:
     branches:
-      - release
+      - release/test
 
 jobs:
   build:
