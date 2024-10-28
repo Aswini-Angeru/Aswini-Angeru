@@ -3,7 +3,7 @@ name: Update Config and Push to Release Branch
 on:
   push:
     branches:
-      - release
+      - release/23
  
 permissions:
   contents: write  # This grants write permission to the contents of the repository
