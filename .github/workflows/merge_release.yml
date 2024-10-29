@@ -4,7 +4,8 @@ on:
   push:
     branches:
       - 'release'
- permissions:
+      
+permissions:
   contents: write  # This grants write permission to the contents of the repository
 
 jobs:
