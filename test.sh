@@ -1,13 +1,13 @@
-    # - name: Set up Git
+    #  name: Set up Git
       # run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
  
-    # - name: Checkout release branch
+    #  name: Checkout release branch
       # run: 
       git checkout release
  
-    # - name: Read and update config file
+    # name: Read and update config file
       # run: |
         # Read the config file and update the values
         # sed -i "s/versions.dete_lib_commom = '11.+/versions.dete_lib_commom = '12.+/g" config/app.properties
