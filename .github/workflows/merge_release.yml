@@ -3,7 +3,7 @@ name: Merge Release Branch
 on:
   push:
     branches:
-      - 'release'
+      - release
       
 permissions:
   contents: write  # This grants write permission to the contents of the repository
