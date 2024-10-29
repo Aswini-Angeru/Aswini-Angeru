@@ -4,24 +4,22 @@ on:
   push:
     branches:
       - 'release'
-      
+ 
 permissions:
   contents: write  # This grants write permission to the contents of the repository
-
+ 
 jobs:
   merge-to-develop:
     runs-on: ubuntu-latest
+ 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
  
       - name: Setup Git
         run: |
-          # git config --global user.name 'github-actions'
-          # git config --global user.email 'github-actions@github.com'
-            git config --global user.name 'github-actions[bot]'
-            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
- 
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
  
       - name: Merge Release to Develop
         run: |
@@ -33,16 +31,15 @@ jobs:
   merge-to-master:
     runs-on: ubuntu-latest
     needs: merge-to-develop
+ 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
  
       - name: Setup Git
         run: |
-          # git config --global user.name 'github-actions'
-          # git config --global user.email 'github-actions@github.com'
-            git config --global user.name 'github-actions[bot]'
-            git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
  
       - name: Merge Release to Master
         run: |
