@@ -3,7 +3,7 @@ name: Update Config and Push to Release Branch
 on:
   push:
     branches:
-      - release/test
+      - release1
  
 permissions:
   contents: write  # This grants write permission to the contents of the repository
@@ -14,37 +14,44 @@ jobs:
  
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
- 
-    - name: Grant execute permission for test.sh
+      uses: actions/checkout@v3
+    -
+      name: Save Current Git Commit ID
+      if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/feature-sat-pullrequest') && (github.event_name == 'push')
       run: |
-        chmod +x test.sh
-        ./test.sh
+        mkdir -p sha
+        echo ${{ github.sha }} > sha/git-commit.txt
+        echo $GITHUB_RUN_NUMBER > sha/action-info.txt
+        cat version.txt > sha/version.txt
+        ls  sha
+        pwd
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+    -
+      name: Save version.txt
+      # if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/feature-sat-pullrequest')  && (github.event_name == 'push')
+      # && contains(fromJSON('["det push workflow"]'), github.workflow) && (github.event_name == 'push')
+      run: |
+        APP_VERSION=$(head -n 1 ./version.txt)
+        echo "APP_VERSION=$APP_VERSION" >> $GITHUB_ENV
+        echo "${APP_VERSION}-${{ github.run_number }}" > sha/app-version.txt
  
-    # - name: Set up Git
-    #   run: |
-    #     git config --global user.name 'github-actions[bot]'
-    #     git config --global user.email 'github-actions[bot]@users.noreply.github.com'
- 
-    # - name: Checkout release branch
-    #   run: git checkout release
- 
-    # - name: Read and update config file
-    #   run: |
-    #     # Read the config file and update the values
-    #     sed -i "s/versions.dete_lib_commom = '11.+/versions.dete_lib_commom = '12.+/g" config/app.properties
-    #     sed -i "s/versions.dete_lib_entity = '28.+/versions.dete_lib_entity = '29.+/g" config/app.properties
-    #     sed -i "s/versions.dete_config_schema = '2025.01.+/versions.dete_config_schema = '2026.01.+/g" config/app.properties
-    #     sed -i "s/versions.dete_calc_schema = '2025.01.+/versions.dete_calc_schema = '2026.01.+/g" config/app.properties
-    #     sed -i "s/versions.dete_calc_engine = '2025.01.+/versions.dete_calc_engine = '2026.01.+/g" config/app.properties
-    #     sed -i "s/versions.dete_config = '2025.01.+/versions.dete_config = '2026.01.+/g" config/app.properties
- 
-    # - name: Commit and push changes to release branch
-    #   run: |
-    #     git add config/app.properties
-    #     git commit -m "Update config values"
-    #     git push origin release
+    - name: Create branch and update sha folder
+      if: (github.ref == 'refs/heads/feature-sat-pullrequest')
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/${{ github.repository }}.git          
+        # Move sha folder
+        mkdir -p sha-updated
+        mv sha sha-updated/sha
+         
+        # Commit and push the changes
+        git add sha-updated/sha
+        git commit -m "Update sha folder"
+        # Create a pull request
+        gh pr create --base "feature/sat" --head "release1" --title "Update sha Folder from release to" --body "This PR updates the sha folder for the release branch."
+      # env:
+      #   PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
 
  
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
